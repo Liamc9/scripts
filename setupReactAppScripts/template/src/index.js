@@ -13,11 +13,16 @@ import Root from "./routes/Root";
 import Login from "./routes/Login";
 import Home from "./routes/Home";
 import Search from "./routes/Search";
-import SettingsPage from "./routes/Settings";
+import Account from "./routes/Account";
 import ManageAccount from "./routes/ManageAccount";
 import Profile from "./routes/Profile";
+import ManageNotifications from "./routes/ManageNotifications";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FAQ from "./routes/FAQ";
+import ContactUs from "./routes/ContactUs";
+import HelpAndFAQs from "./routes/HelpAndFAQs";
+import PrivacyAndSecurity from "./routes/PrivacyAndSecurity";
 
 // Helper component for route protection
 const RequireAuth = ({ children }) => {
@@ -44,22 +49,62 @@ const router = createBrowserRouter([
       { path: "home", element: <Home /> },
       { path: "search", element: <Search /> },
       {
-        path: "settings/:userId",
+        path: "account/:userId",
         element: (
           <RequireAuth>
-            <SettingsPage />
+            <Account />
           </RequireAuth>
         ),
       },
       {
-        path: "settings/manageaccount/:userId",
+        path: "account/manageaccount/:userId",
         element: (
           <RequireAuth>
             <ManageAccount />
           </RequireAuth>
         ),
       },
+      {
+        path: "account/managenotifications/:userId",
+        element: (
+          <RequireAuth>
+            <ManageNotifications />
+          </RequireAuth>
+        ),
+      },
+      { 
+        path: "account/helpandfaqs",
+        element: (
+          <RequireAuth>
+            <HelpAndFAQs />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "account/helpandfaqs/faqs",
+        element: (
+          <RequireAuth>
+            <FAQ />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "account/helpandfaqs/contactus",
+        element: (
+          <RequireAuth>
+            <ContactUs />
+          </RequireAuth>
+        ),
+      },
       { path: "profile/:userId", element: <Profile /> },
+      {
+        path: "account/privacyandsecurity/:userId",
+        element: (
+          <RequireAuth>
+            <PrivacyAndSecurity />
+          </RequireAuth>
+        ),
+      }
     ],
   },
 ]);

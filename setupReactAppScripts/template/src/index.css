@@ -2,13 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ensure the base elements have a white background */
+/* Define CSS variables for colors, typography, and app name */
+:root {
+  /* Colors */
+  --color-primary: #3498db;
+  --color-secondary: #2ecc71;
+  --color-background: white;
+  --color-text: #333333;
+
+  /* Typography */
+  --font-family-base: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-size-base: 16px;
+  --font-size-large: 1.5rem;
+  --font-size-small: 0.875rem;
+}
+
+/* Ensure the base elements have a consistent background and typography */
 html,
 body {
-  background-color: white;
+  background-color: var(--color-background);
   height: 100%; /* Full viewport height */
   margin: 0;
   padding: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
 }
 
 /* Root container styling */
@@ -16,7 +34,7 @@ body {
   min-height: 100vh; /* Ensure full viewport height for the root */
   display: flex;
   flex-direction: column; /* Flex layout for stacking child elements */
-  background-color: white; /* White background for root container */
+  background-color: var(--color-background); /* Using the background variable */
 }
 
 /* Main content area */
@@ -24,5 +42,5 @@ main {
   flex: 1; /* Allow the main content area to grow */
   overflow-y: auto; /* Enable vertical scrolling */
   -webkit-overflow-scrolling: touch; /* Smooth scrolling with bounce on iOS */
-  background-color: white; /* Ensure main has a white background */
+  background-color: var(--color-background); /* Using the background variable */
 }

@@ -7,7 +7,7 @@ import { ChevronRightIcon } from 'liamc9npm';
 import { useNavigate } from "react-router-dom";
 
 // Styled Components
-const SettingsContainer = styled.div`
+const AccountContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Full height to position footer at the bottom */
@@ -116,7 +116,7 @@ const LoadingMessage = styled.div`
   text-align: center;
 `;
 
-const SettingsView = ({ settings, logout, currentUser, userData }) => {
+const AccountView = ({ settings, logout, currentUser, userData }) => {
   // Group settings by category
   const navigate = useNavigate();
 
@@ -150,7 +150,7 @@ const SettingsView = ({ settings, logout, currentUser, userData }) => {
   }
 
   return (
-    <SettingsContainer>
+    <AccountContainer>
       {/* Profile Section */}
       {userData && (
         <ProfileSection to={`/profile/${userData.id}`}>
@@ -182,8 +182,8 @@ const SettingsView = ({ settings, logout, currentUser, userData }) => {
           <a href="/policy">Policy</a>
         </FooterLinks>
       </Footer>
-    </SettingsContainer>
+    </AccountContainer>
   );
 };
 
-export default SettingsView;
+export default AccountView;

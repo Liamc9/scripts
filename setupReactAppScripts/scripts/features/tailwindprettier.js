@@ -14,7 +14,7 @@ if (!appDirectory) {
   console.log("\n--- Adding Tailwind CSS and Prettier with Tailwind Plugin ---");
 
   // Install Tailwind CSS and PostCSS dependencies
-  await executeCommand("npm install tailwindcss postcss autoprefixer", {
+  await executeCommand("npm install -D tailwindcss@3 postcss autoprefixer", {
     cwd: appDirectory,
   });
   await executeCommand("npx tailwindcss init -p", { cwd: appDirectory });

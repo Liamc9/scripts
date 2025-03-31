@@ -32,8 +32,14 @@ export default function Root() {
   // Paths where TopNavBar should be hidden
   const topNavHiddenPaths = [
     "/login",
-    "/settings/:id",
     "/account/:id",
+    "/account/plansandbilling/:id",
+    "/account/manageaccount/:id",
+    "/account/managenotifications/:id",
+    "/account/privacyandsecurity/:id",
+    "/account/helpandfaqs",
+    "/account/helpandfaqs/faqs",
+    "/account/helpandfaqs/contactus",
     "/profile/:id",
   ];
 
@@ -89,11 +95,11 @@ export default function Root() {
           <div>
             <TopWSideNav
               appName="MyApp"
-              signInColor="#000000"
+              signInColor="var(--color-primary)"
               navLinks={[
                 { name: "Home", path: "/home", Icon: HomeIcon3 },
                 { name: "Search", path: "/search", Icon: SearchIcon2 },
-                { name: "Account", path: "/account", Icon: UserIcon3 },
+                { name: "Account", path: currentUser ? `/account/${currentUser.uid}` : "/login", Icon: UserIcon3 },
               ]}
               username={currentUser?.displayName || "Guest"}
               profilePic={
@@ -109,7 +115,7 @@ export default function Root() {
       {/* Bottom Navigation Bar */}
       {!shouldHideBottomNav() && (
         <div className="md:hidden">
-          <BottomNav items={bottomNavItems} activeColor="fff"/>
+          <BottomNav items={bottomNavItems} activeColor="var(--color-primary)"/>
         </div>
       )}
 

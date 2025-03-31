@@ -1,5 +1,3 @@
-// setup-functions.js
-
 const fs = require('fs');
 const path = require('path');
 const { executeCommand } = require('./utils');
@@ -74,6 +72,7 @@ executeCommand(`npm install react-toastify`, { cwd: projectPath });
 executeCommand(`npm install swiper`, { cwd: projectPath});
 executeCommand(`npm install dragula`, { cwd: projectPath });
 executeCommand(`npm install react-router-dom`, { cwd: projectPath });
+executeCommand(`npm install react-icons`, { cwd: projectPath });
 
 
 // Step 4: Install npm packages in the functions directory

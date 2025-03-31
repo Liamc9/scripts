@@ -178,7 +178,7 @@ const ProfileView = ({
 
   // Navigate back to a specified route
   const handleNavigateBack = () => {
-    navigate(`/settings/${currentUser?.uid}`);
+    navigate(`/account/${currentUser?.uid}`);
   };
 
   // Trigger the hidden file input
@@ -214,7 +214,7 @@ const ProfileView = ({
   return (
     <ProfileContainer>
       <Header>
-        <IconButton onClick={handleNavigateBack} aria-label="Go back to settings">
+        <IconButton onClick={handleNavigateBack}>
           <ChevronLeftIcon />
         </IconButton>
         <SaveButton onClick={onSaveChanges} disabled={isSaving}>
