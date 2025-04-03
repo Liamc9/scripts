@@ -7,7 +7,7 @@ const SortContainer = styled.div`
 `;
 
 const Select = styled.select`
-  padding: 0.5rem;
+  padding: 0.8rem;
   border-radius: 4px;
   border: 1px solid #ccc;
 `;

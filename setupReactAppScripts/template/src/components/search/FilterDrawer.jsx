@@ -31,7 +31,7 @@ const Button = styled.button`
 const FilterContainer = styled.div`
   display: grid;
   gap: 2rem;
-  padding: 1rem;
+  padding: 2rem;
 `;
 
 const GroupContainer = styled.div`

@@ -1,11 +1,9 @@
 // src/components/search/Search2.jsx
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import  { BottomDrawer } from 'liamc9npm'; // adjust path as needed
-import { SearchLogic } from 'liamc9npm'; // adjust path as needed
+import { BottomDrawer, SearchLogic } from 'liamc9npm'; // adjust paths as needed
 
-
-// Styled components for Search2 UI
+// Styled Components
 const Container = styled.div`
   padding: 16px;
 `;
@@ -17,7 +15,7 @@ const SearchInputContainer = styled.div`
 
 const SearchInput = styled.input`
   width: 100%;
-  padding: 12px 40px 12px 12px; /* Add padding-right for the 'X' button */
+  padding: 12px 40px 12px 12px; /* padding-right for the 'X' button */
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -25,7 +23,7 @@ const SearchInput = styled.input`
 
   &:focus {
     border-color: #007bff;
-    box-shadow: 0 0 4px rgba(0,123,255,0.3);
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
     outline: none;
   }
 `;
@@ -48,7 +46,7 @@ const CloseButton = styled.button`
 
 const SuggestionsList = styled.ul`
   list-style: none;
-  margin: 12px 0 0 0;
+  margin: 12px 0 0;
   padding: 0;
 `;
 
@@ -71,12 +69,13 @@ const SectionTitle = styled.h4`
 const SearchButton = styled.button`
   width: 100%;
   max-width: 300px;
+    margin: 20px;
   padding: 10px 12px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 25px;
   background-color: white;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
   text-align: left;
   cursor: pointer;
   position: relative;
@@ -88,15 +87,16 @@ const SearchButton = styled.button`
   }
 `;
 
-
 const SearchText = styled.span`
-  color: ${props => (props.hasQuery ? '#000' : '#888')};
+  color: ${({ hasQuery }) => (hasQuery ? '#000' : '#888')};
 `;
 
-const OpenButton = styled(SearchButton)`
-  margin: 20px;
-`;
+// Main Component
 const Search2 = ({ items, onSearch, historyItems = [] }) => {
+  // Use memoized options for Fuse.js (or similar) search
+  const fuseOptions = useMemo(() => ({ keys: ['title'] }), []);
+
+  // Destructure logic from the custom SearchLogic hook
   const {
     isOpen,
     open,
@@ -107,13 +107,49 @@ const Search2 = ({ items, onSearch, historyItems = [] }) => {
     handleInputChange,
     handleSuggestionClick,
     handleSearchForClick,
-  } = SearchLogic({ items, onSearch, historyItems }, { keys: ['title'] });
+  } = SearchLogic({ items, onSearch, historyItems }, fuseOptions);
+
+  // Render recent searches when there's no active query
+  const renderRecentSearches = () => {
+    if (query || historyItems.length === 0) return null;
+    return (
+      <>
+        <SectionTitle>Recent Searches</SectionTitle>
+        <SuggestionsList>
+          {historyItems.map((item, index) => (
+            <SuggestionItem key={index} onClick={() => handleSuggestionClick(item)}>
+              {item.title}
+            </SuggestionItem>
+          ))}
+        </SuggestionsList>
+      </>
+    );
+  };
+
+  // Render search suggestions when the user types a query
+  const renderSuggestions = () => {
+    if (!query || suggestions.length === 0) return null;
+    return (
+      <SuggestionsList>
+        <SuggestionItem onClick={handleSearchForClick}>
+          Search For "{query}"
+        </SuggestionItem>
+        {suggestions.map((item, index) => (
+          <SuggestionItem key={index} onClick={() => handleSuggestionClick(item)}>
+            {item.title}
+          </SuggestionItem>
+        ))}
+      </SuggestionsList>
+    );
+  };
 
   return (
     <>
-      <OpenButton onClick={open}>
-        <SearchText hasQuery={lastQuery}>{lastQuery || 'Search...'}</SearchText>
-      </OpenButton>
+      <SearchButton onClick={open}>
+        <SearchText hasQuery={Boolean(lastQuery)}>
+          {lastQuery || 'Search...'}
+        </SearchText>
+      </SearchButton>
       <BottomDrawer isOpen={isOpen} onClose={close}>
         <Container>
           <SearchInputContainer>
@@ -129,42 +165,8 @@ const Search2 = ({ items, onSearch, historyItems = [] }) => {
               </CloseButton>
             )}
           </SearchInputContainer>
-
-          {/* Display historyItems when there's no query */}
-          {!query && historyItems.length > 0 && (
-            <>
-              <SectionTitle>Recent Searches</SectionTitle>
-              <SuggestionsList>
-                {historyItems.map((item, index) => (
-                  <SuggestionItem
-                    key={index}
-                    onClick={() => handleSuggestionClick(item)}
-                  >
-                    {item.title}
-                  </SuggestionItem>
-                ))}
-              </SuggestionsList>
-            </>
-          )}
-
-          {/* Display suggestions when user types */}
-          {query && suggestions.length > 0 && (
-            <SuggestionsList>
-              {query && (
-                <SuggestionItem onClick={handleSearchForClick}>
-                  Search For "{query}"
-                </SuggestionItem>
-              )}
-              {suggestions.map((item, index) => (
-                <SuggestionItem
-                  key={index}
-                  onClick={() => handleSuggestionClick(item)}
-                >
-                  {item.title}
-                </SuggestionItem>
-              ))}
-            </SuggestionsList>
-          )}
+          {renderRecentSearches()}
+          {renderSuggestions()}
         </Container>
       </BottomDrawer>
     </>
