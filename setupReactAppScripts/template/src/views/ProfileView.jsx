@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { Input, DeleteModal } from "liamc9npm";
+import { Input, Modal, DeleteCard } from "liamc9npm";
 import { ChevronLeftIcon } from "liamc9npm";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -248,12 +248,10 @@ const ProfileView = ({
       <DeleteButton onClick={handleDeleteAccount}>Delete Account</DeleteButton>
 
       {showDeleteModal && (
-        <DeleteModal
-          onCancel={cancelDeleteAccount}
-          onConfirm={confirmDeleteAccount}
-          title="Delete Your Account"
-          message="Are you sure you want to delete your account? This action cannot be undone."
-        />
+        <Modal isModalOpen={showDeleteModal} closeModal={cancelDeleteAccount} animate={true}>
+        <DeleteCard onCancel={cancelDeleteAccount} onConfirm={confirmDeleteAccount} />
+      </Modal>
+
       )}
     </ProfileContainer>
   );
