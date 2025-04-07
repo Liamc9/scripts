@@ -10,6 +10,8 @@ if (!appDirectory) {
 
 (async function addFirebaseConfig() {
   console.log("\n--- Adding Firebase ---");
-
+  
   executeCommand("npm install firebase", { cwd: appDirectory });
+  executeCommand("npm install -g firebase-tools", { cwd: appDirectory });
+
 })();
