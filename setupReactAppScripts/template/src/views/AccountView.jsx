@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { StackedList } from 'liamc9npm';
 import { Link } from "react-router-dom"; // Import Link for profile navigation
-import { ChevronRightIcon } from 'liamc9npm';
+import { FaChevronRight } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 
 // Styled Components
@@ -160,7 +160,7 @@ const AccountView = ({ settings, logout, currentUser, userData }) => {
             <ViewProfile>View Profile</ViewProfile>
           </ProfileInfo>
           <IconWrapper>
-            <ChevronRightIcon />
+            <FaChevronRight />
           </IconWrapper>
         </ProfileSection>
       )}

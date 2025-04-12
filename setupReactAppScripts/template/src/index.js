@@ -23,7 +23,7 @@ import FAQ from "./routes/FAQ";
 import ContactUs from "./routes/ContactUs";
 import HelpAndFAQs from "./routes/HelpAndFAQs";
 import PrivacyAndSecurity from "./routes/PrivacyAndSecurity";
-
+import PlansAndBilling from "./routes/PlansAndBilling";
 // Helper component for route protection
 const RequireAuth = ({ children }) => {
   const { currentUser } = useAuth();
@@ -102,6 +102,14 @@ const router = createBrowserRouter([
         element: (
           <RequireAuth>
             <PrivacyAndSecurity />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "account/plansandbilling/:userId",
+        element: (
+          <RequireAuth>
+            <PlansAndBilling />
           </RequireAuth>
         ),
       }

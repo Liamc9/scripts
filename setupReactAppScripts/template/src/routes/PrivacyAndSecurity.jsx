@@ -1,7 +1,17 @@
 import React from 'react';
-import {EditSettingsTemplate} from 'liamc9npm';
+import styled from 'styled-components';
+import { useAuth } from '../context/AuthContext'; // Adjust the path as necessary
+import { EditSettingsTemplate } from 'liamc9npm';
 
-const initialPrivacyState = {
+const LoadingMessage = styled.div`
+  padding: 16px;
+  font-size: 1.25rem;
+  color: #666;
+  text-align: center;
+`;
+
+// Define default values for the privacy settings form
+const defaultPrivacyState = {
   twoFactorAuth: true,
   locationTracking: false,
   dataSharing: false,
@@ -13,11 +23,6 @@ const sections = [
   {
     title: 'Privacy Settings',
     fields: [
-      {
-        name: 'Two-Factor Authentication',
-        type: 'ToggleField',
-        fieldName: 'twoFactorAuth',
-      },
       {
         name: 'Allow Location Tracking',
         type: 'ToggleField',
@@ -39,6 +44,11 @@ const sections = [
     title: 'Security',
     fields: [
       {
+        name: 'Two-Factor Authentication',
+        type: 'ToggleField',
+        fieldName: 'twoFactorAuth',
+      },
+      {
         name: 'Change Password',
         type: 'EditableTextField',
         fieldName: 'password',
@@ -50,13 +60,49 @@ const sections = [
 ];
 
 const PrivacyAndSecurity = () => {
-  const handleSave = (formData) => {
-    const updatedForm = {
+  const { userData, updateUserData } = useAuth();
+
+  // Wait until userData is loaded
+  if (!userData) {
+    return <LoadingMessage>Loading user data...</LoadingMessage>;
+  }
+
+  // Use Firestore data if available; otherwise, fallback to default values.
+  const initialPrivacyState = {
+    twoFactorAuth:
+      userData.twoFactorAuth !== undefined
+        ? userData.twoFactorAuth
+        : defaultPrivacyState.twoFactorAuth,
+    locationTracking:
+      userData.locationTracking !== undefined
+        ? userData.locationTracking
+        : defaultPrivacyState.locationTracking,
+    dataSharing:
+      userData.dataSharing !== undefined
+        ? userData.dataSharing
+        : defaultPrivacyState.dataSharing,
+    adPersonalization:
+      userData.adPersonalization !== undefined
+        ? userData.adPersonalization
+        : defaultPrivacyState.adPersonalization,
+    // For security reasons, the password field is always empty initially.
+    password: '',
+  };
+
+  // Handle form save action and update the settings accordingly using the firebase hook.
+  const handleSave = async (formData) => {
+    // Process the password field to indicate if it was updated.
+    const updatedData = {
       ...formData,
       password: formData.password ? '(Updated)' : '(Unchanged)',
     };
-    console.log('Saving Privacy & Security Settings:', updatedForm);
-    alert('Privacy & Security settings updated.');
+
+    try {
+      await updateUserData(updatedData);
+      console.log('Privacy & Security settings updated successfully:', updatedData);
+    } catch (error) {
+      console.error('Failed to update Privacy & Security settings:', error);
+    }
   };
 
   return (
@@ -65,6 +111,7 @@ const PrivacyAndSecurity = () => {
       sections={sections}
       initialValues={initialPrivacyState}
       onSave={handleSave}
+      toggleColor="#00e48b"
     />
   );
 };

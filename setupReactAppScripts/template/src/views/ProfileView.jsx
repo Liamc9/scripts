@@ -1,8 +1,9 @@
-// src/components/ProfileView.js
-
+/***************************************
+ * src/components/ProfileView.js
+ ***************************************/
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { Input, Modal, DeleteCard } from "liamc9npm";
+import { Input } from "liamc9npm";
 import { ChevronLeftIcon } from "liamc9npm";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -71,7 +72,8 @@ const ProfileImage = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background-image: url(${(props) => props.image || "https://via.placeholder.com/120"});
+  background-image: url(${(props) =>
+    props.image || "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"});
   background-size: cover;
   background-position: center;
   margin-bottom: 10px;
@@ -112,35 +114,16 @@ const InputField = styled.div`
   margin-bottom: 20px;
 `;
 
-const DeleteButton = styled.button`
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #e74c3c;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #c0392b;
-  }
-`;
-
 const ProfileView = ({
-  handleSaveChanges,      // Function to handle saving changes (passed from parent)
-  isSaving,               // Boolean indicating if save operation is in progress
-  showDeleteModal,        // Boolean to control visibility of delete modal
-  confirmDeleteAccount,   // Function to confirm account deletion (passed from parent)
-  setShowDeleteModal,     // Function to toggle delete modal visibility (passed from parent)
-  currentUser,            // Current authenticated user (passed from parent)
-  userData,               // User data fetched from backend (passed from parent)
+  handleSaveChanges, // Function to handle saving changes
+  isSaving,          // Boolean indicating if save is in progress
+  currentUser,
+  userData,
 }) => {
-  // Local State Management
   const [firstName, setFirstName] = useState("");
-  const [profilePic, setProfilePic] = useState("https://via.placeholder.com/120");
+  const [profilePic, setProfilePic] = useState(
+    "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+  );
   const [newProfilePicFile, setNewProfilePicFile] = useState(null);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
@@ -154,13 +137,11 @@ const ProfileView = ({
         toast.error("Only JPEG, PNG, and GIF files are allowed.");
         return;
       }
-
       const maxSize = 5 * 1024 * 1024; // 5MB
       if (file.size > maxSize) {
         toast.error("File size exceeds 5MB.");
         return;
       }
-
       setNewProfilePicFile(file);
       const previewURL = URL.createObjectURL(file);
       setProfilePic(previewURL);
@@ -176,39 +157,30 @@ const ProfileView = ({
     };
   }, [newProfilePicFile, profilePic]);
 
-  // Navigate back to a specified route
+  // Navigate back
   const handleNavigateBack = () => {
     navigate(`/account/${currentUser?.uid}`);
   };
 
   // Trigger the hidden file input
   const triggerFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+    fileInputRef.current?.click();
   };
 
-  // Initialize local state with user data when available
+  // Initialize local state with user data
   useEffect(() => {
     if (userData) {
       setFirstName(userData.displayName || "");
-      setProfilePic(userData.photoURL || "https://via.placeholder.com/120");
+      setProfilePic(
+        userData.photoURL ||
+          "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+      );
     }
   }, [userData]);
 
   // Handle the save changes button click
   const onSaveChanges = () => {
     handleSaveChanges({ firstName, newProfilePicFile, profilePic });
-  };
-
-  // Handle account deletion button click
-  const handleDeleteAccount = () => {
-    setShowDeleteModal(true);
-  };
-
-  // Cancel account deletion
-  const cancelDeleteAccount = () => {
-    setShowDeleteModal(false);
   };
 
   return (
@@ -245,14 +217,8 @@ const ProfileView = ({
         />
       </InputField>
 
-      <DeleteButton onClick={handleDeleteAccount}>Delete Account</DeleteButton>
-
-      {showDeleteModal && (
-        <Modal isModalOpen={showDeleteModal} closeModal={cancelDeleteAccount} animate={true}>
-        <DeleteCard onCancel={cancelDeleteAccount} onConfirm={confirmDeleteAccount} />
-      </Modal>
-
-      )}
+      {/* Delete Button Removed Here */}
+      {/* No more showDeleteModal / confirmDeleteAccount logic */}
     </ProfileContainer>
   );
 };
