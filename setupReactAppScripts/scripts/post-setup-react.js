@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { executeCommand } = require('./utils');
-const { exec } = require('child_process');
+const addStripeIntegration = require('./features/stripe');
 
 // Get the project path from the command-line arguments
 const projectPath = process.argv[2];
@@ -62,29 +62,34 @@ if (fs.existsSync(templateIndexJsPath)) {
 
 // Step 3: Install npm packages in the project directory
 console.log("\n--- Installing packages in the project directory ---");
-executeCommand(`npm install react-firebase-hooks`, { cwd: projectPath });
-executeCommand(`npm install stripe`, { cwd: projectPath });
-executeCommand(`npm install dotenv`, { cwd: projectPath });
-executeCommand(`npm install cors`, { cwd: projectPath });
-executeCommand(`npm install liamc9npm@latest`, { cwd: projectPath });
-executeCommand(`npm install styled-components`, { cwd: projectPath });
-executeCommand(`npm install react-toastify`, { cwd: projectPath });
-executeCommand(`npm install swiper`, { cwd: projectPath});
-executeCommand(`npm install dragula`, { cwd: projectPath });
-executeCommand(`npm install react-router-dom`, { cwd: projectPath });
-executeCommand(`npm install react-icons`, { cwd: projectPath });
+const projectPackages = [
+  "react-firebase-hooks",
+  "stripe",
+  "dotenv",
+  "cors",
+  "liamc9npm@latest",
+  "styled-components",
+  "react-toastify",
+  "swiper",
+  "dragula",
+  "react-router-dom",
+  "react-icons",
+];
+projectPackages.forEach((pkg) => {
+  executeCommand(`npm install ${pkg}`, { cwd: projectPath });
+});
 
 
 // Step 4: Install npm packages in the functions directory
 console.log("\n--- Installing packages in the functions directory ---");
-executeCommand(`npm install stripe`, { cwd: functionsDir });
-executeCommand(`npm install dotenv`, { cwd: functionsDir });
-executeCommand(`npm install cors`, { cwd: functionsDir });
+const functionPackages = ["stripe", "dotenv", "cors"];
+functionPackages.forEach((pkg) => {
+  executeCommand(`npm install ${pkg}`, { cwd: functionsDir });
+});
 
-// Step 5: Run features/stripe.js after installations
-console.log("\n--- Running features/stripe.js ---");
-const stripeScriptPath = path.join(__dirname, "features", "stripe.js");
-executeCommand(`node "${stripeScriptPath}" "${projectPath}"`, { cwd: __dirname });
+// Step 5: Run Stripe setup
+console.log("\n--- Adding Stripe provider ---");
+addStripeIntegration(projectPath);
 
 // Final message
 console.log("\nSetup complete.");

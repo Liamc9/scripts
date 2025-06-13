@@ -3,14 +3,11 @@ const fs = require("fs");
 const path = require("path");
 const { executeCommand } = require("../utils");
 
-// Get the project directory from command-line arguments
-const appDirectory = process.argv[2];
-if (!appDirectory) {
-  console.error("Please provide the path to your React app directory.");
-  process.exit(1);
-}
-
-(async function addStripeIntegration() {
+async function addStripeIntegration(appDirectory) {
+  if (!appDirectory) {
+    console.error("Please provide the path to your React app directory.");
+    process.exit(1);
+  }
   console.log("\n--- Adding Stripe Integration ---");
 
   // Install Stripe packages
@@ -19,6 +16,7 @@ if (!appDirectory) {
   });
   
   // Create stripeProvider.jsx in src folder
+  const srcDir = path.join(appDirectory, "src");
   const providerPath = path.join(srcDir, "stripeProvider.jsx");
   const providerContent = `
 // src/StripeProvider.js
@@ -42,6 +40,12 @@ export default StripeProvider;
   fs.writeFileSync(providerPath, providerContent.trim());
   console.log(`Created: ${providerPath}`);
 
-
   console.log("Stripe has been added!");
-})();
+}
+
+module.exports = addStripeIntegration;
+
+if (require.main === module) {
+  const appDirectory = process.argv[2];
+  addStripeIntegration(appDirectory);
+}
