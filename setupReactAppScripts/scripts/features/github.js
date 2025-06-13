@@ -2,14 +2,11 @@
 const path = require("path");
 const { executeCommand, askQuestion } = require("../utils");
 
-// Get the project directory from command-line arguments
-const appDirectory = process.argv[2];
-if (!appDirectory) {
-  console.error("Please provide the path to your React app directory.");
-  process.exit(1);
-}
-
-(async function setupGitHub() {
+async function setupGitHub(appDirectory) {
+  if (!appDirectory) {
+    console.error("Please provide the path to your React app directory.");
+    process.exit(1);
+  }
   console.log("\n--- Setting Up GitHub Integration ---");
 
   const githubRepoUrl = await askQuestion(
@@ -41,4 +38,11 @@ if (!appDirectory) {
   } else {
     console.log("ℹ️  GitHub repository URL not provided. Skipping GitHub integration.");
   }
-})();
+}
+
+module.exports = setupGitHub;
+
+if (require.main === module) {
+  const appDirectory = process.argv[2];
+  setupGitHub(appDirectory);
+}

@@ -3,6 +3,9 @@
 const path = require("path");
 const fs = require("fs");
 const { askQuestion, executeCommand } = require("./utils");
+const addTailwindPrettier = require("./features/tailwindprettier");
+const addFirebase = require("./features/firebase");
+const addGitHub = require("./features/github");
 
 (async function main() {
   // Ensure a project name is provided.
@@ -61,15 +64,14 @@ const { askQuestion, executeCommand } = require("./utils");
   console.log("\nSimple React app setup complete!");
 
   // Execute feature scripts based on user selections.
-  const featureScriptsDir = path.join(__dirname, "features");
   if (addTailwindPrettier) {
-    executeCommand(`node tailwindprettier.js "${appDirectory}"`, { cwd: featureScriptsDir });
+    await addTailwindPrettier(appDirectory);
   }
   if (addFirebase) {
-    executeCommand(`node firebase.js "${appDirectory}"`, { cwd: featureScriptsDir });
+    await addFirebase(appDirectory);
   }
   if (addGitHub) {
-    executeCommand(`node github.js "${appDirectory}"`, { cwd: featureScriptsDir });
+    await addGitHub(appDirectory);
   }
 
   console.log("\nAll selected features have been added to your app!");
