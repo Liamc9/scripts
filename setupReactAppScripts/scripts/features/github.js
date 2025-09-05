@@ -30,15 +30,15 @@ if (!appDirectory) {
       // Commit with a default message
       executeCommand('git commit -m "Initial commit"', { cwd: appDirectory });
 
-      // Push to GitHub
-      executeCommand("git push -u origin master", { cwd: appDirectory });
+      // Push to GitHub (main branch)
+      executeCommand("git push -u origin main", { cwd: appDirectory });
 
-      console.log("✅ GitHub integration has been set up and project files have been pushed to the repository!");
+      console.log("✅ GitHub integration has been set up and pushed!");
     } catch (error) {
-      console.error("❌ An error occurred while setting up GitHub integration.");
+      console.error("❌ An error occurred while setting up GitHub integration.", error);
       process.exit(1);
     }
   } else {
-    console.log("ℹ️  GitHub repository URL not provided. Skipping GitHub integration.");
+    console.log("ℹ️  No URL provided. Skipping GitHub integration.");
   }
 })();

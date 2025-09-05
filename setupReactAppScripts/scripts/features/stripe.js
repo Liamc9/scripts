@@ -10,38 +10,40 @@ if (!appDirectory) {
   process.exit(1);
 }
 
+// Define src folder path
+const srcDir = path.join(appDirectory, "src");
+
 (async function addStripeIntegration() {
   console.log("\n--- Adding Stripe Integration ---");
 
   // Install Stripe packages
-  executeCommand("npm install @stripe/react-stripe-js @stripe/stripe-js", {
-    cwd: appDirectory,
-  });
-  
-  // Create stripeProvider.jsx in src folder
+  executeCommand(
+    "pnpm add @stripe/react-stripe-js @stripe/stripe-js",
+    { cwd: appDirectory }
+  );
+
+  // Create StripeProvider component
   const providerPath = path.join(srcDir, "stripeProvider.jsx");
   const providerContent = `
-// src/StripeProvider.js
+// src/stripeProvider.jsx
 import React from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('pk_test_51OEhb3Ediyx2YMeqaDZ3I4ygNAKwD7OUiND0hGlHaT9aB3Otvvt7i6Qb2u0UvGCFpI9aLBMcyvxciL1ANLhneoIF008ci3UFkJ');
+const stripePublicKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
+const stripePromise = loadStripe(stripePublicKey);
 
-const StripeProvider = ({ children }) => {
-  return (
-    <Elements stripe={stripePromise}>
-      {children}
-    </Elements>
-  );
-};
+const StripeProvider = ({ children }) => (
+  <Elements stripe={stripePromise}>
+    {children}
+  </Elements>
+);
 
 export default StripeProvider;
+  `.trim();
 
-  `;
-  fs.writeFileSync(providerPath, providerContent.trim());
+  fs.writeFileSync(providerPath, providerContent);
   console.log(`Created: ${providerPath}`);
 
-
-  console.log("Stripe has been added!");
+  console.log("✅ Stripe integration added!");
 })();

@@ -41,78 +41,19 @@ const router = createBrowserRouter([
     path: "",
     element: <Root />,
     children: [
-      {
-        index: true,
-        element: <Navigate to="/home" replace />,
-      },
+      { index: true, element: <Navigate to="/home" replace /> },
       { path: "login", element: <Login /> },
       { path: "home", element: <Home /> },
       { path: "search", element: <Search /> },
-      {
-        path: "account/:userId",
-        element: (
-          <RequireAuth>
-            <Account />
-          </RequireAuth>
-        ),
-      },
-      {
-        path: "account/manageaccount/:userId",
-        element: (
-          <RequireAuth>
-            <ManageAccount />
-          </RequireAuth>
-        ),
-      },
-      {
-        path: "account/managenotifications/:userId",
-        element: (
-          <RequireAuth>
-            <ManageNotifications />
-          </RequireAuth>
-        ),
-      },
-      { 
-        path: "account/helpandfaqs",
-        element: (
-          <RequireAuth>
-            <HelpAndFAQs />
-          </RequireAuth>
-        ),
-      },
-      {
-        path: "account/helpandfaqs/faqs",
-        element: (
-          <RequireAuth>
-            <FAQ />
-          </RequireAuth>
-        ),
-      },
-      {
-        path: "account/helpandfaqs/contactus",
-        element: (
-          <RequireAuth>
-            <ContactUs />
-          </RequireAuth>
-        ),
-      },
+      { path: "account/:userId", element: <RequireAuth><Account /></RequireAuth> },
+      { path: "account/manageaccount/:userId", element: <RequireAuth><ManageAccount /></RequireAuth> },
+      { path: "account/managenotifications/:userId", element: <RequireAuth><ManageNotifications /></RequireAuth> },
+      { path: "account/helpandfaqs", element: <RequireAuth><HelpAndFAQs /></RequireAuth> },
+      { path: "account/helpandfaqs/faqs", element: <RequireAuth><FAQ /></RequireAuth> },
+      { path: "account/helpandfaqs/contactus", element: <RequireAuth><ContactUs /></RequireAuth> },
       { path: "profile/:userId", element: <Profile /> },
-      {
-        path: "account/privacyandsecurity/:userId",
-        element: (
-          <RequireAuth>
-            <PrivacyAndSecurity />
-          </RequireAuth>
-        ),
-      },
-      {
-        path: "account/plansandbilling/:userId",
-        element: (
-          <RequireAuth>
-            <PlansAndBilling />
-          </RequireAuth>
-        ),
-      }
+      { path: "account/privacyandsecurity/:userId", element: <RequireAuth><PrivacyAndSecurity /></RequireAuth> },
+      { path: "account/plansandbilling/:userId", element: <RequireAuth><PlansAndBilling /></RequireAuth> },
     ],
   },
 ]);
@@ -126,6 +67,5 @@ root.render(
         <RouterProvider router={router} />
       </NotificationProvider>
     </AuthProvider>
-    <ToastContainer />
   </React.StrictMode>
 );

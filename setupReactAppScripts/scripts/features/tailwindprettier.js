@@ -14,10 +14,16 @@ if (!appDirectory) {
   console.log("\n--- Adding Tailwind CSS and Prettier with Tailwind Plugin ---");
 
   // Install Tailwind CSS and PostCSS dependencies
-  await executeCommand("npm install -D tailwindcss@3 postcss autoprefixer", {
-    cwd: appDirectory,
-  });
-  await executeCommand("npx tailwindcss init -p", { cwd: appDirectory });
+  await executeCommand(
+    "pnpm add -D tailwindcss@3 postcss autoprefixer",
+    { cwd: appDirectory }
+  );
+
+  // Initialize Tailwind config (equivalent to npx tailwindcss init -p)
+  await executeCommand(
+    "pnpm exec tailwindcss init -p",
+    { cwd: appDirectory }
+  );
 
   // Modify `tailwind.config.js`
   const tailwindConfigPath = path.join(appDirectory, "tailwind.config.js");
@@ -36,10 +42,8 @@ module.exports = {
 
   // Install Prettier and Tailwind CSS Prettier Plugin
   await executeCommand(
-    "npm install -D prettier prettier-plugin-tailwindcss --legacy-peer-deps",
-    {
-      cwd: appDirectory,
-    }
+    "pnpm add -D prettier prettier-plugin-tailwindcss",
+    { cwd: appDirectory }
   );
 
   // Create `.prettierrc.json`

@@ -39,8 +39,15 @@ const { askQuestion, executeCommand } = require("./utils");
     console.log(`Created directory: ${allProjectsDir}`);
   }
 
-  console.log("\n--- Setting up a simple React app ---");
-  executeCommand(`npx create-react-app ${projectName}`, { cwd: allProjectsDir });
+  console.log("\n--- Setting up a simple React app with Vite ---");
+  // Scaffold with Vite
+  executeCommand(
+    `pnpm create vite@latest ${projectName} -- --template react`,
+    { cwd: allProjectsDir }
+  );
+
+  // Install dependencies
+  executeCommand(`pnpm install`, { cwd: appDirectory });
 
   console.log("\n--- Replacing the src folder with template src ---");
   const templateSrc = path.join(__dirname, "../template/src");
@@ -58,18 +65,27 @@ const { askQuestion, executeCommand } = require("./utils");
 
   fs.cpSync(templateSrc, projectSrc, { recursive: true });
   console.log(`Copied template src from ${templateSrc} to ${projectSrc}`);
-  console.log("\nSimple React app setup complete!");
+  console.log("\nVite React app setup complete!");
 
   // Execute feature scripts based on user selections.
   const featureScriptsDir = path.join(__dirname, "features");
   if (addTailwindPrettier) {
-    executeCommand(`node tailwindprettier.js "${appDirectory}"`, { cwd: featureScriptsDir });
+    executeCommand(
+      `node tailwindprettier.js "${appDirectory}"`,
+      { cwd: featureScriptsDir }
+    );
   }
   if (addFirebase) {
-    executeCommand(`node firebase.js "${appDirectory}"`, { cwd: featureScriptsDir });
+    executeCommand(
+      `node firebase.js "${appDirectory}"`,
+      { cwd: featureScriptsDir }
+    );
   }
   if (addGitHub) {
-    executeCommand(`node github.js "${appDirectory}"`, { cwd: featureScriptsDir });
+    executeCommand(
+      `node github.js "${appDirectory}"`,
+      { cwd: featureScriptsDir }
+    );
   }
 
   console.log("\nAll selected features have been added to your app!");

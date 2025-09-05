@@ -11,13 +11,13 @@ import {
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../firebase-config";
 
-function DataExampleComponent() {
+// Accept userId and listingId as props for flexibility and clarity.
+// If not provided, use placeholder values and clearly label them.
+function DataExampleComponent({ userId = "abc123" /* placeholder userId */, listingId = "existingListingId" /* placeholder listingId */ }) {
     const [roomData, setRoomData] = useState(null);
     const [listings, setListings] = useState([]);
     const [multipleDocs, setMultipleDocs] = useState([]);
     
-    const userId = "abc123";
-
     // Option 1: Get QuerySnapshot for user listings
     const [listingsSnapshot, listingsLoading, listingsError] = useCollection(
         query(collection(db, "listings"), where("userId", "==", userId)),
@@ -31,7 +31,7 @@ function DataExampleComponent() {
     }, [listingsSnapshot]);
 
     // Option 2: Get DocumentSnapshot for a single document
-    const listingId = "existingListingId"; // Replace with your actual listing ID
+    // listingId is now a prop (or uses placeholder)
     const [roomSnapshot, roomLoading, roomError] = useDocument(
         doc(db, "listings", listingId),
     );
@@ -74,7 +74,7 @@ function DataExampleComponent() {
         addListing({ 
             title: "New Listing", 
             description: "Awesome place!", 
-            userId: "abc123" 
+            userId // use the prop or placeholder
         });
     };
 
@@ -83,7 +83,7 @@ function DataExampleComponent() {
         await updateDoc(doc(db, "listings", id), data);
     };
     const handleUpdate = () => {
-        updateListing("existingListingId", { title: "Updated Title" });
+        updateListing(listingId, { title: "Updated Title" }); // use the prop or placeholder
     };
 
     // DELETE DOC
@@ -91,7 +91,7 @@ function DataExampleComponent() {
         await deleteDoc(doc(db, "listings", id));
     };
     const handleDelete = () => {
-        removeListing("existingListingId");
+        removeListing(listingId); // use the prop or placeholder
     };
 
     return (

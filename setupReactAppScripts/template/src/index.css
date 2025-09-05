@@ -2,45 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Define CSS variables for colors, typography, and app name */
+/*─── CSS VARIABLES ─────────────────────────────────────────*/
 :root {
   /* Colors */
-  --color-primary: #3498db;
-  --color-secondary: #2ecc71;
-  --color-background: white;
-  --color-text: #333333;
+  --primary:    #3498db;
+  --secondary:  #2ecc71;
+  --bg:         #fff;
+  --text:       #333;
 
   /* Typography */
-  --font-family-base: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-size-base: 16px;
-  --font-size-large: 1.5rem;
-  --font-size-small: 0.875rem;
+  --ff-sans:    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --fs-base:    1rem;      /* 16px */
+  --fs-sm:      0.875rem;  /* 14px */
+  --fs-lg:      1.5rem;    /* 24px */
+  --lh:         1.5;
 }
 
-/* Ensure the base elements have a consistent background and typography */
-html,
+/*─── GLOBAL RESET ────────────────────────────────────────────*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin:     0;
+  padding:    0;
+}
+
+/*─── BASE ELEMENTS ───────────────────────────────────────────*/
+html {
+  height: 100%;
+}
+
 body {
-  background-color: var(--color-background);
-  height: 100%; /* Full viewport height */
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-base);
-  color: var(--color-text);
+  min-height: 100%;
+  font:       var(--fs-base)/var(--lh) var(--ff-sans);
+  color:      var(--text);
+  background: var(--bg);
 }
 
-/* Root container styling */
+/*─── LAYOUT CONTAINERS ──────────────────────────────────────*/
 #root {
-  min-height: 100vh; /* Ensure full viewport height for the root */
-  display: flex;
-  flex-direction: column; /* Flex layout for stacking child elements */
-  background-color: var(--color-background); /* Using the background variable */
+  display:        flex;
+  flex-direction: column;
+  min-height:     100vh;
+  overflow-x: hidden;
 }
 
-/* Main content area */
 main {
-  flex: 1; /* Allow the main content area to grow */
-  overflow-y: auto; /* Enable vertical scrolling */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling with bounce on iOS */
-  background-color: var(--color-background); /* Using the background variable */
+  flex:                        1;
+  overflow-y:                  auto;
+  -webkit-overflow-scrolling:  touch;
 }
